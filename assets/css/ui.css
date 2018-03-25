@@ -1,0 +1,15 @@
+
+@font-face { 
+	font-family: bitOperatorPlus; 
+	src: url(../fonts/8bitOperatorPlusSC-Regular.ttf); 
+}
+
+body,
+p {
+  font-family: bitOperatorPlus;
+}
+
+.controls { 
+		font-family: bitOperatorPlus; 
+		font-size: 12px;
+}

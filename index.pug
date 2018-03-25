@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  div.main(style="width: 100%; height:100%; overflow:hidden;")
+    canvas#canvas(width="380" height="380" style="background-color:#fff")
+    div#controls(class="" style="display:none; position:absolute; left:8px; right:8px; bottom:10px; top:395px; background:rgb(166,226,107)")
+      p.controls &nbsp;Score:&nbsp;100
+      div(style="position:absolute; right:4px; width:32px; height:32px; top:4px; border: 2px solid green;")
+        img.axe(style="position:absolute; width:24px; height:24px; left:4px; top:4px; background:rgb(166,226,107);")
+
+ 
+  script(src="assets/javascripts/main/main.js")
