@@ -9,7 +9,7 @@ const d3 = require('d3');
 
 const $tile = require('./assets/javascripts/map/tile.js');
 
-const tileSize = 38;
+const tileSize = 20;
 const originX = 190;
 const originY = 190;
 const gridSize = tileSize;
@@ -28,8 +28,10 @@ const DOWN = 4;
 
 var map = [];
 var mapSprites = [];
-var playerSprites = [];
 var itemSprites = [];
+
+var start = null;
+var context = null;
 
 $.get('assets/maps/basic.map', function(data) {
     var lines = data.split(/\r?\n/);
@@ -42,42 +44,100 @@ $.get('assets/maps/basic.map', function(data) {
  * Respond to the Document 'ready' event
  */
 $(document).ready(function() {
-    var context = $('#canvas')[0].getContext('2d');
+
+   context = $('#canvas')[0].getContext('2d');
  
-    createSpriteBuffer(0, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 32, 32, 32, 32, 32, 32);
-    createSpriteBuffer(1, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 0, 32, 32, 32, 32, 32);
-    createSpriteBuffer(2, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 64, 32, 32, 32, 32, 32);
-    createSpriteBuffer(3, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 64, 0, 32, 32, 32, 32);
-    createSpriteBuffer(4, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 96, 0, 32, 32, 32, 32);
-    createSpriteBuffer(5, mapSprites, 'assets/images/testtileset.gif', $tile.SAIL, 128, 0, 32, 32, 32, 32);
-    createSpriteBuffer(6, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 0, 0, 32, 32, 32, 32);
- 
-    var pos = 0;
-    for (var iSprite = 0; iSprite < 4; iSprite++) {
-        createSpriteBuffer(pos++, playerSprites, 'assets/images/playersprites.gif', $tile.WALKING, 0, 24*iSprite, 24, 24, 24, 24);
-        createSpriteBuffer(pos++, playerSprites, 'assets/images/playersprites.gif', $tile.WALKING, 24, 24*iSprite, 24, 24, 24, 24); 
-    }
+    createSpriteBuffer(0, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 16, 16, 16, 16, 16, 16);
+    createSpriteBuffer(1, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 0, 16, 16, 16, 16, 16);
+    createSpriteBuffer(2, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 32, 16, 16, 16, 16, 16);
+    createSpriteBuffer(3, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 32, 0, 16, 16, 16, 16);
+    createSpriteBuffer(4, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 48, 0, 16, 16, 16, 16);
+    createSpriteBuffer(5, mapSprites, 'assets/images/testtileset.gif', $tile.SAIL, 64, 0, 16, 16, 16, 16);
+    createSpriteBuffer(6, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 16, 0, 16, 16, 16, 16);
 
-    for (var iSprite = 4; iSprite < 10; iSprite++) {
-        createSpriteBuffer(pos++, playerSprites, 'assets/images/playersprites.gif', $tile.SAILING, 0, 24*iSprite, 24, 24, 24, 24);
-        createSpriteBuffer(pos++, playerSprites, 'assets/images/playersprites.gif', $tile.SAILING, 24, 24*iSprite, 24, 24, 24, 24); 
-    }
-
-    createSpriteBuffer(0, itemSprites, 'assets/images/items.gif', $tile.BOAT, 0, 24, 24, 24, 24, 24);
-    createSpriteBuffer(1, itemSprites, 'assets/images/items.gif', $tile.AXE, 24, 24, 24, 24, 24, 24);
-    createSpriteBuffer(2, itemSprites, 'assets/images/items.gif', $tile.KEY, 48, 24, 24, 24, 24, 24);
-
-    image.onload = function() {
-
-        context.drawImage(image, 0, 0, this.width, this.height, 0, 20, 384, 384);
-        $(".controls").html("&nbsp;Time: 100 - (" + (tilePos.x + 5) + "," +  (tilePos.y + 5) + ")");
+    createSpriteBuffer(0, itemSprites, 'assets/images/items.gif', $tile.BOAT, 0, 16, 16, 16, 16, 16);
+    createSpriteBuffer(1, itemSprites, 'assets/images/items.gif', $tile.AXE, 16, 16, 16, 16, 16, 16);
+    createSpriteBuffer(2, itemSprites, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
   
-    }     
+ 
+    window.requestAnimationFrame(gameTicker);
   
     window.addEventListener('keydown', doKeyDown, true);
     window.addEventListener('keyup', doKeyUp, true);
 
 });
+
+/**
+ * The Game Loop
+ * 
+ * @param {*} timestamp 
+ */
+function gameTicker(timestamp) {
+
+    context.fillStyle = '#a6e26b';
+    context.fillRect(0, 0, 804, 804);
+    
+    start =  (!start) ? timestamp : start;
+
+    if (timestamp - start > 50) {
+
+        waterFill(context);
+
+        for (var xMap = 0; xMap < 40; xMap++) {
+            
+            for (var yMap = 0; yMap < 40; yMap++) {
+                var sprite = map[xMap][yMap];
+                
+                var tile = mapSprites[translate(sprite)];
+
+                context.drawImage(tile.getImage(), xMap * tileSize + 4, yMap * tileSize + 4); 
+                
+                if (sprite == 10) {
+                    context.drawImage(itemSprites[0].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);                    
+                } else if (sprite == 11) {
+                    context.drawImage(itemSprites[1].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
+                } 
+                  
+            }  
+
+        }
+
+    }
+    
+    window.requestAnimationFrame(gameTicker);
+
+} 
+
+/**
+ * Fill in the Water
+ * 
+ * @param {*} ctx the Canvas Context
+ */
+function waterFill(ctx) {
+    
+    for (var xMap = 0; xMap < 40; xMap++) {
+        for (var yMap = 0; yMap < 40; yMap++) {
+            var sprite = map[xMap][yMap];
+
+            if (sprite == 22 || sprite == 10) {
+                ctx.fillStyle="#185d99";
+                ctx.fillRect(xMap * tileSize, yMap * tileSize, 24 ,24);
+            }
+
+        }
+
+    }
+
+}
+
+/**
+ * Translate the sprite from the map
+ * 
+ * @param {*} sprite to translate
+ */
+function translate(sprite) {
+    return sprite == 20 ? 1 : (sprite == 22 || sprite == 10) ? 5 : (sprite == 1 || sprite == 11) ? 6 : (sprite==3) ? 0 : (sprite==2) ? 4 : 3;
+}
 
 /**
  * Create an off-screen buffer containg an image

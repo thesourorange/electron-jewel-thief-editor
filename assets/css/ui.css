@@ -13,3 +13,18 @@ p {
 		font-family: bitOperatorPlus; 
 		font-size: 12px;
 }
+
+#drawButton {
+	border: solid; 
+	color: grey; 
+	padding:10px; 
+	text-align: center;
+	padding-bottom: 20px;
+}
+
+#draw {
+	color: black; 
+	font-size: 14px; 
+	font-weight: bold; 
+	text-decoration: none; 
+}

@@ -2,11 +2,15 @@ extends layout
 
 block content
   div.main(style="width: 100%; height:100%; overflow:hidden;")
-    canvas#canvas(width="380" height="380" style="background-color:#fff")
-    div#controls(class="" style="display:none; position:absolute; left:8px; right:8px; bottom:10px; top:395px; background:rgb(166,226,107)")
-      p.controls &nbsp;Score:&nbsp;100
-      div(style="position:absolute; right:4px; width:32px; height:32px; top:4px; border: 2px solid green;")
-        img.axe(style="position:absolute; width:24px; height:24px; left:4px; top:4px; background:rgb(166,226,107);")
+    div(style="position:absolute; top:8px; left:5px; width:85px; bottom:9px; border: 3px solid green; background: #a6e26b")
+      div#drawButton(style="position:absolute; top:12px; left:8px; width:44px; height:14px;")
+        a#draw(href="") Load
+      div#drawButton(style="position:absolute; top:68px; left:8px; width:44px; height:14px;")
+        a#draw(href="") Reset
+      div#drawButton(style="position:absolute; top:124px; left:8px; width:44px; height:14px;")
+        a#draw(href="") Save
+    div(style="position:absolute; left:100px;")
+      canvas#canvas(width="804" height="804" style="background-color:#fff; border: 3px solid green;")
+    div(style="position:absolute; top:8px; right:5px; width:69px; bottom:9px; border: 3px solid green;  background: #a6e26b")
 
- 
   script(src="assets/javascripts/main/main.js")

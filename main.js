@@ -12,7 +12,7 @@ const url = require('url')
 var mainWindow = null;
 
 function createWindow () {
-   mainWindow = new BrowserWindow({width: 16*40 + 95, height: 16*40, resizable: false, autoHideMenuBar: true})
+   mainWindow = new BrowserWindow({width: 800 + 200, height: 800 + 56, resizable: false, autoHideMenuBar: true})
 
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.pug'),
