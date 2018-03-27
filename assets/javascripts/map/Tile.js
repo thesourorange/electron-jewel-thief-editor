@@ -15,6 +15,8 @@ module.exports.BOAT = 0;
 module.exports.AXE = 1;
 module.exports.KEY = 2;
 
+module.exports.PLAYER = 0;
+
 const UNBLOCKED = 0;
 const BLOCKED = 1;
 

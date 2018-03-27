@@ -29,7 +29,9 @@ const DOWN = 4;
 var map = [];
 var mapSpritesSmall = [];
 var mapSpritesLarge = [];
-var itemSprites = [];
+var itemSpritesSmall = [];
+var itemSpritesLarge = [];
+var playerSpritesLarge = [];
 
 var start = null;
 var context = null;
@@ -64,10 +66,16 @@ $(document).ready(function() {
     createSpriteBuffer(5, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.SAIL, 128, 0, 32, 32, 32, 32);
     createSpriteBuffer(6, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.WALK, 0, 0, 32, 32, 32, 32);
  
+    createSpriteBuffer(0, itemSpritesSmall, 'assets/images/items.gif', $tile.BOAT, 0, 16, 16, 16, 16, 16);
+    createSpriteBuffer(1, itemSpritesSmall, 'assets/images/items.gif', $tile.AXE, 16, 16, 16, 16, 16, 16);
+    createSpriteBuffer(2, itemSpritesSmall, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
 
-    createSpriteBuffer(0, itemSprites, 'assets/images/items.gif', $tile.BOAT, 0, 16, 16, 16, 16, 16);
-    createSpriteBuffer(1, itemSprites, 'assets/images/items.gif', $tile.AXE, 16, 16, 16, 16, 16, 16);
-    createSpriteBuffer(2, itemSprites, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
+    createSpriteBuffer(0, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.BOAT, 0, 32, 32, 32, 32, 32);
+    createSpriteBuffer(1, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.AXE, 32, 32, 32, 32, 32, 32);
+    createSpriteBuffer(2, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.KEY, 64, 32, 32, 32, 32, 32);
+
+    createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerSpritesLarge.gif', $tile.KEY, 0, 32, 32, 32, 32, 32);
+  
   
     window.requestAnimationFrame(gameTicker);
   
@@ -97,32 +105,47 @@ function gameTicker(timestamp) {
         $(".flower").attr('src', mapSpritesLarge[4].getImage().toDataURL()); 
         $(".field").attr('src', mapSpritesLarge[6].getImage().toDataURL()); 
 
+        $(".axe").attr('src', itemSpritesLarge[0].getImage().toDataURL()); 
+        $(".boat").attr('src', itemSpritesLarge[1].getImage().toDataURL()); 
+        $(".key").attr('src', itemSpritesLarge[2].getImage().toDataURL()); 
+
+        $(".player").attr('src', playerSpritesLarge[0].getImage().toDataURL()); 
+
         waterFill(context);
-
-        for (var xMap = 0; xMap < 40; xMap++) {
-            
-            for (var yMap = 0; yMap < 40; yMap++) {
-                var sprite = map[xMap][yMap];
-                
-                var tile = mapSpritesSmall[translate(sprite)];
-
-                context.drawImage(tile.getImage(), xMap * tileSize + 4, yMap * tileSize + 4); 
-                
-                if (sprite == 10) {
-                    context.drawImage(itemSprites[0].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);                    
-                } else if (sprite == 11) {
-                    context.drawImage(itemSprites[1].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
-                } 
-                  
-            }  
-
-        }
+        landFill(context);
 
     }
     
     window.requestAnimationFrame(gameTicker);
 
 } 
+
+/**
+ * Fill in the Land
+ * 
+ * @param {*} ctx the Canvas Context
+ */
+function landFill(ctx) {
+    for (var xMap = 0; xMap < 40; xMap++) {
+                
+        for (var yMap = 0; yMap < 40; yMap++) {
+            var sprite = map[xMap][yMap];
+            
+            var tile = mapSpritesSmall[translate(sprite)];
+
+            ctx.drawImage(tile.getImage(), xMap * tileSize + 4, yMap * tileSize + 4); 
+            
+            if (sprite == 10) {
+                ctx.drawImage(itemSpritesSmall[0].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);                    
+            } else if (sprite == 11) {
+                ctx.drawImage(itemSpritesSmall[1].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
+            } 
+            
+        }  
+
+    }
+
+}
 
 /**
  * Fill in the Water
