@@ -27,7 +27,8 @@ const RIGHT = 3;
 const DOWN = 4;
 
 var map = [];
-var mapSprites = [];
+var mapSpritesSmall = [];
+var mapSpritesLarge = [];
 var itemSprites = [];
 
 var start = null;
@@ -47,19 +48,27 @@ $(document).ready(function() {
 
    context = $('#canvas')[0].getContext('2d');
  
-    createSpriteBuffer(0, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 16, 16, 16, 16, 16, 16);
-    createSpriteBuffer(1, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 0, 16, 16, 16, 16, 16);
-    createSpriteBuffer(2, mapSprites, 'assets/images/testtileset.gif', $tile.BLOCKED, 32, 16, 16, 16, 16, 16);
-    createSpriteBuffer(3, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 32, 0, 16, 16, 16, 16);
-    createSpriteBuffer(4, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 48, 0, 16, 16, 16, 16);
-    createSpriteBuffer(5, mapSprites, 'assets/images/testtileset.gif', $tile.SAIL, 64, 0, 16, 16, 16, 16);
-    createSpriteBuffer(6, mapSprites, 'assets/images/testtileset.gif', $tile.WALK, 16, 0, 16, 16, 16, 16);
+    createSpriteBuffer(0, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 16, 16, 16, 16, 16, 16);
+    createSpriteBuffer(1, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 0, 16, 16, 16, 16, 16);
+    createSpriteBuffer(2, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 32, 16, 16, 16, 16, 16);
+    createSpriteBuffer(3, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.WALK, 32, 0, 16, 16, 16, 16);
+    createSpriteBuffer(4, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.WALK, 48, 0, 16, 16, 16, 16);
+    createSpriteBuffer(5, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.SAIL, 64, 0, 16, 16, 16, 16);
+    createSpriteBuffer(6, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.WALK, 16, 0, 16, 16, 16, 16);
+
+    createSpriteBuffer(0, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.BLOCKED, 32, 32, 32, 32, 32, 32);
+    createSpriteBuffer(1, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.BLOCKED, 0, 32, 32, 32, 32, 32);
+    createSpriteBuffer(2, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.BLOCKED, 64, 32, 32, 32, 32, 32);
+    createSpriteBuffer(3, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.WALK, 64, 0, 32, 32, 32, 32);
+    createSpriteBuffer(4, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.WALK, 96, 0, 32, 32, 32, 32);
+    createSpriteBuffer(5, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.SAIL, 128, 0, 32, 32, 32, 32);
+    createSpriteBuffer(6, mapSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.WALK, 0, 0, 32, 32, 32, 32);
+ 
 
     createSpriteBuffer(0, itemSprites, 'assets/images/items.gif', $tile.BOAT, 0, 16, 16, 16, 16, 16);
     createSpriteBuffer(1, itemSprites, 'assets/images/items.gif', $tile.AXE, 16, 16, 16, 16, 16, 16);
     createSpriteBuffer(2, itemSprites, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
   
- 
     window.requestAnimationFrame(gameTicker);
   
     window.addEventListener('keydown', doKeyDown, true);
@@ -81,6 +90,13 @@ function gameTicker(timestamp) {
 
     if (timestamp - start > 50) {
 
+        $(".snag").attr('src', mapSpritesLarge[0].getImage().toDataURL()); 
+        $(".tree").attr('src', mapSpritesLarge[1].getImage().toDataURL()); 
+        $(".water").attr('src', mapSpritesLarge[2].getImage().toDataURL()); 
+        $(".shrub").attr('src', mapSpritesLarge[3].getImage().toDataURL()); 
+        $(".flower").attr('src', mapSpritesLarge[4].getImage().toDataURL()); 
+        $(".field").attr('src', mapSpritesLarge[6].getImage().toDataURL()); 
+
         waterFill(context);
 
         for (var xMap = 0; xMap < 40; xMap++) {
@@ -88,7 +104,7 @@ function gameTicker(timestamp) {
             for (var yMap = 0; yMap < 40; yMap++) {
                 var sprite = map[xMap][yMap];
                 
-                var tile = mapSprites[translate(sprite)];
+                var tile = mapSpritesSmall[translate(sprite)];
 
                 context.drawImage(tile.getImage(), xMap * tileSize + 4, yMap * tileSize + 4); 
                 
