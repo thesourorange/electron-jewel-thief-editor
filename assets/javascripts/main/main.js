@@ -116,9 +116,28 @@ function gameTicker(timestamp) {
 
     }
     
+    $('#canvas')[0].addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos($('#canvas')[0], evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+    }, false);
+
     window.requestAnimationFrame(gameTicker);
 
 } 
+
+/**
+ * Get the Canvas Mouse Position
+ * 
+ * @param {*} canvas the Canvas
+ * @param {*} evt the Mouse Event 
+ */
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
 
 /**
  * Fill in the Land
