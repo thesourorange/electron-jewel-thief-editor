@@ -43,6 +43,84 @@ $.get('assets/maps/basic.map', function(data) {
      }
 }, 'text');
 
+$('.reset').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.save').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.load').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.snag').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.tree').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.water').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.shrub').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.flower').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.field').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.axe').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.boat').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.key').on('click', function(e) {
+
+    return false;
+  
+});
+
+$('.player').on('click', function(e) {
+
+    return false;
+  
+});
+
 /**
  * Respond to the Document 'ready' event
  */
