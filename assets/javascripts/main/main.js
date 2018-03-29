@@ -34,7 +34,6 @@ var itemSpritesLarge = [];
 var playerSpritesLarge = [];
 
 var start = null;
-var context = null;
 
 $.get('assets/maps/basic.map', function(data) {
     var lines = data.split(/\r?\n/);
@@ -120,39 +119,29 @@ $('.player').on('click', function(e) {
     return false;
   
 });
-
-$('#canvas')[0].addEventListener('mousemove', function(evt) {
-    try { 
+ 
+$('#canvas')[0].addEventListener('mouseup', function(evt) {
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
 
     contentFill(context);
     waterFill(context);
     landFill(context);
-
+    
+    context.beginPath()
     context.strokeStyle = '#ff6347';
-    context.rect(20,20,24,24);
+
+    context.rect(Math.floor(mousePos.x/tileSize)*tileSize , Math.floor(mousePos.y/tileSize)*tileSize, 24, 24);
+
     context.lineWidth = 5;
-    context.stroke();
-
-    for (var xMap = 0; xMap < 40; xMap++) {
-        for (var yMap = 0; yMap < 40; yMap++) {
-            var sprite = map[xMap][yMap];
- 
-        }
-
-    }
-} catch (e) {
-    alert(e)
-}
+    context.stroke();   
+     
 }, false);
 
 /**
  * Respond to the Document 'ready' event
  */
 $(document).ready(function() {
-
-   context = $('#canvas')[0].getContext('2d');
  
     createSpriteBuffer(0, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 16, 16, 16, 16, 16, 16);
     createSpriteBuffer(1, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 0, 16, 16, 16, 16, 16);
@@ -196,10 +185,10 @@ $(document).ready(function() {
  */
 function gameTicker(timestamp) {
 
-   
     start =  (!start) ? timestamp : start;
 
     if (timestamp - start > 50) {
+        var context = $('#canvas')[0].getContext('2d');
 
         $(".snag").attr('src', mapSpritesLarge[0].getImage().toDataURL()); 
         $(".tree").attr('src', mapSpritesLarge[1].getImage().toDataURL()); 
