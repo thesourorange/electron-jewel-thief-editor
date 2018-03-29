@@ -121,6 +121,32 @@ $('.player').on('click', function(e) {
   
 });
 
+$('#canvas')[0].addEventListener('mousemove', function(evt) {
+    try { 
+    var mousePos = getMousePos($('#canvas')[0], evt);
+    var context = $('#canvas')[0].getContext('2d');
+
+    contentFill(context);
+    waterFill(context);
+    landFill(context);
+
+    context.strokeStyle = '#ff6347';
+    context.rect(20,20,24,24);
+    context.lineWidth = 5;
+    context.stroke();
+
+    for (var xMap = 0; xMap < 40; xMap++) {
+        for (var yMap = 0; yMap < 40; yMap++) {
+            var sprite = map[xMap][yMap];
+ 
+        }
+
+    }
+} catch (e) {
+    alert(e)
+}
+}, false);
+
 /**
  * Respond to the Document 'ready' event
  */
@@ -170,9 +196,7 @@ $(document).ready(function() {
  */
 function gameTicker(timestamp) {
 
-    context.fillStyle = '#a6e26b';
-    context.fillRect(0, 0, 804, 804);
-    
+   
     start =  (!start) ? timestamp : start;
 
     if (timestamp - start > 50) {
@@ -189,23 +213,14 @@ function gameTicker(timestamp) {
         $(".key").attr('src', itemSpritesLarge[2].getImage().toDataURL()); 
 
         $(".player").attr('src', playerSpritesLarge[0].getImage().toDataURL()); 
-
+        
+        contentFill(context);
         waterFill(context);
         landFill(context);
 
+    } else {
+        window.requestAnimationFrame(gameTicker);
     }
-    
-    $('#canvas')[0].addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos($('#canvas')[0], evt);
-        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-
-        for (var yMap = 0; yMap < 40; yMap++) {
-            var sprite = map[xMap][yMap];
-        }
- 
-    }, false);
-
-    window.requestAnimationFrame(gameTicker);
 
 } 
 
@@ -224,11 +239,22 @@ function getMousePos(canvas, evt) {
 }
 
 /**
+ * Fill in the Context
+ * 
+ * @param {*} context the Canvas Context
+ */
+function contentFill(context) {
+    context.fillStyle = '#a6e26b';
+    context.fillRect(0, 0, 804, 804);
+}
+
+/**
  * Fill in the Land
  * 
  * @param {*} ctx the Canvas Context
  */
 function landFill(ctx) {
+
     for (var xMap = 0; xMap < 40; xMap++) {
                 
         for (var yMap = 0; yMap < 40; yMap++) {
