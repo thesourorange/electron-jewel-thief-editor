@@ -154,7 +154,8 @@ $(document).ready(function() {
 
     createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerSpritesLarge.gif', $tile.KEY, 0, 32, 32, 32, 32, 32);
   
-  
+    resetToolMenu();
+
     window.requestAnimationFrame(gameTicker);
   
     window.addEventListener('keydown', doKeyDown, true);
@@ -197,6 +198,11 @@ function gameTicker(timestamp) {
     $('#canvas')[0].addEventListener('mousemove', function(evt) {
         var mousePos = getMousePos($('#canvas')[0], evt);
         var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+
+        for (var yMap = 0; yMap < 40; yMap++) {
+            var sprite = map[xMap][yMap];
+        }
+ 
     }, false);
 
     window.requestAnimationFrame(gameTicker);
@@ -304,6 +310,23 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
         sprites[sprite] = new $tile(canvas, type);
 
     }
+
+}
+
+/**
+ * Reset the Tool Menu
+ */
+function resetToolMenu(){
+
+    $(".snag").css({ opacity: 0.3 });
+    $(".tree").css({ opacity: 0.3 });
+    $(".shrub").css({ opacity: 0.3 });
+    $(".flower").css({ opacity: 0.3 });
+ 
+    $(".boat").css({ opacity: 0.3 });
+    $(".axe").css({ opacity: 0.3 });
+    $(".key").css({ opacity: 0.3 });
+    $(".player").css({ opacity: 0.3 });
 
 }
 
