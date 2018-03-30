@@ -17,14 +17,19 @@ const gridSize = tileSize;
 const WALK = 0;
 const SAIL = 1;
 
-const BOAT = 10;
-const AXE = 11;
-const WATER = 22;
-
 const LEFT = 1;
 const UP = 2;
 const RIGHT = 3;
 const DOWN = 4;
+
+const FIELD = '1';
+const FLOWER = '2';
+const SNAG = '3';
+const BOAT = '10';
+const AXE = '11';
+const SHRUB = '21';
+const TREE = '20';
+const WATER = '22';
 
 var map = [];
 var mapSpritesSmall = [];
@@ -67,17 +72,23 @@ $('.load').on('click', function(e) {
 
 $('.selectSnag').on('click', function(e) {
 
+    setTile(SNAG);
+
     return false;
   
 });
 
 $('.selectTree').on('click', function(e) {
 
+    setTile(TREE);
+
     return false;
   
 });
 
 $('.selectWater').on('click', function(e) {
+
+    setTile(WATER);
 
     return false;
   
@@ -133,19 +144,14 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
     waterFill(context);
     landFill(context);
     
-    context.beginPath()
-    context.strokeStyle = '#ff6347';
-
-    context.rect(Math.floor(mousePos.x/tileSize)*tileSize , Math.floor(mousePos.y/tileSize)*tileSize, 24, 24);
-
+    drawSelectionRect(context, mousePos.x, mousePos.y);
+     
     pos.x = Math.floor(mousePos.x/tileSize);
     pos.y = Math.floor(mousePos.y/tileSize);
     
     selectMenuItems(map[pos.x][pos.y]);
   
-    context.lineWidth = 5;
-    context.stroke();   
-     
+
 }, false);
 
 /**
@@ -235,6 +241,40 @@ function getMousePos(canvas, evt) {
         x: evt.clientX - rect.left,
         y: evt.clientY - rect.top
     };
+}
+
+/**
+ * Set the Tile
+ * 
+ * @param {*} tile to set
+ */
+function setTile(tile) {
+    map[pos.x][pos.y] = tile;
+
+    var context = $('#canvas')[0].getContext('2d');
+
+    contentFill(context);
+    waterFill(context);
+    landFill(context);
+
+    drawSelectionRect(context, pos.x*tileSize, pos.y*tileSize);
+
+}
+
+/**
+ * Draw the Selection Rectangle
+ * 
+ * @param {*} context the Graphics Context
+ * @param {*} x the 'X' coordinate
+ * @param {*} y the 'Y' coordinate
+ */
+function drawSelectionRect(context, x, y) {
+    context.beginPath()
+    context.strokeStyle = '#ff6347';
+
+    context.rect(Math.floor(x/tileSize)*tileSize , Math.floor(y/tileSize)*tileSize, 24, 24);
+    context.lineWidth = 5;
+    context.stroke();   
 }
 
 /**
@@ -341,27 +381,31 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 function selectMenuItems(value)
 {
 
+
     switch (value) {
-        case '1':
+        case FIELD:
             setMenuItems(true, true, true, true, true, false, false, true, true, true);
             break;
-        case '2':
-            setMenuItems(true, true, true, true, true, true, true, false, true, true);
+        case FLOWER:
+            setMenuItems(true, true, true, true, false, true, false, false, false, false);
             break;
-        case '3':
-            setMenuItems(false, true, true, true, true, false, false, false, false, false);
+        case SNAG:
+            setMenuItems(false, true, true, true, false, true, false, false, false, false);
             break;
-        case '10':
+        case BOAT:
             setMenuItems(true, true, true, true, true, true, false, false, false, false);
             break;        
-        case '11':
+        case AXE:
             setMenuItems(true, true, true, true, true, true, false, false, true, true);
             break;        
-        case '20':
-            setMenuItems(true, true, true, true, true, false, false, false, false, false);
+        case TREE:
+            setMenuItems(true, false, true, true, true, false, false, false, false, false);
             break;
-        case '22':
-            setMenuItems(true, true, true, true, true, true, true, false, false, false);
+        case SHRUB:
+            setMenuItems(true, true, true, false, true, true, false, false, false, false);
+            break;
+        case WATER:
+            setMenuItems(true, true, false, true, true, true, true, false, false, false);
             break;
 
     }
