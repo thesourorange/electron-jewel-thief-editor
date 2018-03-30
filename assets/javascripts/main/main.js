@@ -35,6 +35,11 @@ var playerSpritesLarge = [];
 
 var start = null;
 
+var pos = {
+    x:-1,
+    y:-1
+}
+
 $.get('assets/maps/basic.map', function(data) {
     var lines = data.split(/\r?\n/);
     for (var iLine in lines) {
@@ -60,61 +65,61 @@ $('.load').on('click', function(e) {
   
 });
 
-$('.snag').on('click', function(e) {
+$('.selectSnag').on('click', function(e) {
 
     return false;
   
 });
 
-$('.tree').on('click', function(e) {
+$('.selectTree').on('click', function(e) {
 
     return false;
   
 });
 
-$('.water').on('click', function(e) {
+$('.selectWater').on('click', function(e) {
 
     return false;
   
 });
 
-$('.shrub').on('click', function(e) {
+$('.selectShrub').on('click', function(e) {
 
     return false;
   
 });
 
-$('.flower').on('click', function(e) {
+$('.selectFlower').on('click', function(e) {
 
     return false;
   
 });
 
-$('.field').on('click', function(e) {
+$('.selectField').on('click', function(e) {
 
     return false;
   
 });
 
-$('.axe').on('click', function(e) {
+$('.selectAxe').on('click', function(e) {
 
     return false;
   
 });
 
-$('.boat').on('click', function(e) {
+$('.selectBoat').on('click', function(e) {
 
     return false;
   
 });
 
-$('.key').on('click', function(e) {
+$('.selectKey').on('click', function(e) {
 
     return false;
   
 });
 
-$('.player').on('click', function(e) {
+$('.selectPlayer').on('click', function(e) {
 
     return false;
   
@@ -133,6 +138,11 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
 
     context.rect(Math.floor(mousePos.x/tileSize)*tileSize , Math.floor(mousePos.y/tileSize)*tileSize, 24, 24);
 
+    pos.x = Math.floor(mousePos.x/tileSize);
+    pos.y = Math.floor(mousePos.y/tileSize);
+    
+    selectMenuItems(map[pos.x][pos.y]);
+  
     context.lineWidth = 5;
     context.stroke();   
      
@@ -195,10 +205,10 @@ function gameTicker(timestamp) {
         $(".water").attr('src', mapSpritesLarge[2].getImage().toDataURL()); 
         $(".shrub").attr('src', mapSpritesLarge[3].getImage().toDataURL()); 
         $(".flower").attr('src', mapSpritesLarge[4].getImage().toDataURL()); 
-        $(".field").attr('src', mapSpritesLarge[6].getImage().toDataURL()); 
-
-        $(".axe").attr('src', itemSpritesLarge[0].getImage().toDataURL()); 
-        $(".boat").attr('src', itemSpritesLarge[1].getImage().toDataURL()); 
+        $(".field").attr('src', mapSpritesLarge[5].getImage().toDataURL()); 
+ 
+        $(".axe").attr('src', itemSpritesLarge[1].getImage().toDataURL()); 
+        $(".boat").attr('src', itemSpritesLarge[0].getImage().toDataURL()); 
         $(".key").attr('src', itemSpritesLarge[2].getImage().toDataURL()); 
 
         $(".player").attr('src', playerSpritesLarge[0].getImage().toDataURL()); 
@@ -328,25 +338,79 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
 }
 
+function selectMenuItems(value)
+{
+
+    switch (value) {
+        case '1':
+            setMenuItems(true, true, true, true, true, false, false, true, true, true);
+            break;
+        case '2':
+            setMenuItems(true, true, true, true, true, true, true, false, true, true);
+            break;
+        case '3':
+            setMenuItems(false, true, true, true, true, false, false, false, false, false);
+            break;
+        case '10':
+            setMenuItems(true, true, true, true, true, true, false, false, false, false);
+            break;        
+        case '11':
+            setMenuItems(true, true, true, true, true, true, false, false, true, true);
+            break;        
+        case '20':
+            setMenuItems(true, true, true, true, true, false, false, false, false, false);
+            break;
+        case '22':
+            setMenuItems(true, true, true, true, true, true, true, false, false, false);
+            break;
+
+    }
+
+}
+
 /**
  * Reset the Tool Menu
  */
-function resetToolMenu(){
+function resetToolMenu() {
 
-    $(".snag").css({ opacity: 0.3 });
-    $(".tree").css({ opacity: 0.3 });
-    $(".shrub").css({ opacity: 0.3 });
-    $(".flower").css({ opacity: 0.3 });
- 
-    $(".boat").css({ opacity: 0.3 });
-    $(".axe").css({ opacity: 0.3 });
-    $(".key").css({ opacity: 0.3 });
-    $(".player").css({ opacity: 0.3 });
+    setMenuItems(false, false, false, false, false, false, false, false, false, false);
 
 }
 
 /**
  * Process the Key Down Event
+ * 
+ * @param {*} snag 'true' the snag is selected
+ * @param {*} tree 'true' the tree is selected
+ * @param {*} water 'true' the water is selected
+ * @param {*} shrub 'true' the shrub is selected
+ * @param {*} flower 'true' the flower is selected  
+ * @param {*} field 'true' the field is selected  
+ * @param {*} boat 'true' the boat is selected
+ * @param {*} axe 'true' the axe is selected
+ * @param {*} key 'true' the key is selected
+ * @param {*} player The player opacity
+ */
+function setMenuItems(snag, tree, water, shrub, flower, field, boat, axe, key, player){
+ 
+    $(".snag").css({ opacity: snag ? 1.0 : 0.5 });
+    $(".tree").css({ opacity: tree ? 1.0 : 0.5 });
+    $(".shrub").css({ opacity: shrub ? 1.0 : 0.5 });
+    $(".flower").css({ opacity: flower ? 1.0 : 0.5 });
+ 
+    $(".boat").css({ opacity: boat ? 1.0 : 0.5 });
+    $(".axe").css({ opacity: axe ? 1.0 : 0.5 });
+    $(".key").css({ opacity: key ? 1.0 : 0.5 });
+    $(".player").css({ opacity: player ? 1.0 : 0.5 });
+
+    $(".waterFiller").css("background-color", water ? "rgb(93,150,199)" : "rgb(141,180,216)");
+    $(".fieldFiller").css("background-color", field ? "rgb(166,226,107)" : "rgb(177,231,126)");
+
+}
+
+/**
+ * Process the Key Down Event
+ * 
  * @param {*} event The Keyboard Event
  */
 function doKeyDown(event) {
