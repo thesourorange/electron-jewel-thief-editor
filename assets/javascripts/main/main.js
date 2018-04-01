@@ -7,6 +7,7 @@
 const $ = require('jquery');
 const d3 = require('d3');
 
+const $fileutil = require('./assets/javascripts/util/fileutil.js');
 const $tile = require('./assets/javascripts/map/tile.js');
 
 const tileSize = 20;
@@ -27,6 +28,7 @@ const FLOWER = '2';
 const SNAG = '3';
 const BOAT = '10';
 const AXE = '11';
+const KEY = '12';
 const SHRUB = '21';
 const TREE = '20';
 const WATER = '22';
@@ -60,8 +62,33 @@ $('.reset').on('click', function(e) {
 
 $('.save').on('click', function(e) {
 
-    return false;
+    var data = [];
   
+    for (var xMap = 0; xMap < 40; xMap++) {
+        var line = '';
+        
+        for (var yMap = 0; yMap < 40; yMap++) {
+            var sprite = map[xMap][yMap];
+
+            line += line.length == 0 ? sprite : ' ' + sprite;
+
+        }
+
+        line += "\r\n";
+        data.push(line);
+
+    }
+ 
+    try {
+        var fileutil = new $fileutil(document);
+
+        fileutil.saveAs(data, "level.map");
+
+    } catch (e) {
+        alert(e);
+    }
+
+    return false;
 });
 
 $('.load').on('click', function(e) {
@@ -73,7 +100,6 @@ $('.load').on('click', function(e) {
 $('.selectSnag').on('click', function(e) {
 
     setTile(SNAG);
-
     return false;
   
 });
@@ -81,7 +107,6 @@ $('.selectSnag').on('click', function(e) {
 $('.selectTree').on('click', function(e) {
 
     setTile(TREE);
-
     return false;
   
 });
@@ -89,43 +114,48 @@ $('.selectTree').on('click', function(e) {
 $('.selectWater').on('click', function(e) {
 
     setTile(WATER);
-
     return false;
   
 });
 
 $('.selectShrub').on('click', function(e) {
 
+    setTile(SHRUB);
     return false;
   
 });
 
 $('.selectFlower').on('click', function(e) {
 
+    setTile(FLOWER);
     return false;
   
 });
 
 $('.selectField').on('click', function(e) {
 
+    setTile(FIELD);
     return false;
   
 });
 
 $('.selectAxe').on('click', function(e) {
 
+    setTile(AXE);
     return false;
   
 });
 
 $('.selectBoat').on('click', function(e) {
 
+    setTile(BOAT);
     return false;
   
 });
 
 $('.selectKey').on('click', function(e) {
 
+    setTile(KEY);
     return false;
   
 });
@@ -380,7 +410,6 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
 function selectMenuItems(value)
 {
-
 
     switch (value) {
         case FIELD:
