@@ -14,6 +14,8 @@ module.exports.SAILING = 1;
 module.exports.BOAT = 0;
 module.exports.AXE = 1;
 module.exports.KEY = 2;
+module.exports.DIAMOND = 3;
+module.exports.GATE = 4;
 
 module.exports.PLAYER = 0;
 

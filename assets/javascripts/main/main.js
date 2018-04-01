@@ -29,6 +29,9 @@ const SNAG = '3';
 const BOAT = '10';
 const AXE = '11';
 const KEY = '12';
+const PLAYER = '13';
+const DIAMOND = '14';
+const GATE = '15';
 const SHRUB = '21';
 const TREE = '20';
 const WATER = '22';
@@ -162,10 +165,25 @@ $('.selectKey').on('click', function(e) {
 
 $('.selectPlayer').on('click', function(e) {
 
-    return false;
+    setTile(PLAYER);
+    return false;    
+  
+});
+
+$('.selectDiamond').on('click', function(e) {
+
+    setTile(DIAMOND);
+    return false;    
   
 });
  
+$('.selectGate').on('click', function(e) {
+
+    setTile(GATE);
+    return false;    
+  
+});
+
 $('#canvas')[0].addEventListener('mouseup', function(evt) {
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
@@ -208,10 +226,13 @@ $(document).ready(function() {
     createSpriteBuffer(0, itemSpritesSmall, 'assets/images/items.gif', $tile.BOAT, 0, 16, 16, 16, 16, 16);
     createSpriteBuffer(1, itemSpritesSmall, 'assets/images/items.gif', $tile.AXE, 16, 16, 16, 16, 16, 16);
     createSpriteBuffer(2, itemSpritesSmall, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
+    createSpriteBuffer(3, itemSpritesSmall, 'assets/images/diamond.gif', $tile.DIAMOND, 0, 0, 32, 32, 16, 16);
 
     createSpriteBuffer(0, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.BOAT, 0, 32, 32, 32, 32, 32);
     createSpriteBuffer(1, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.AXE, 32, 32, 32, 32, 32, 32);
     createSpriteBuffer(2, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.KEY, 64, 32, 32, 32, 32, 32);
+    createSpriteBuffer(3, itemSpritesLarge, 'assets/images/diamondLarge.gif', $tile.DIAMOND, 0, 0, 32, 32, 32, 32);
+    createSpriteBuffer(4, itemSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.GATE, 96, 32, 32, 32, 32, 32);
 
     createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerSpritesLarge.gif', $tile.KEY, 0, 32, 32, 32, 32, 32);
   
@@ -246,7 +267,9 @@ function gameTicker(timestamp) {
         $(".axe").attr('src', itemSpritesLarge[1].getImage().toDataURL()); 
         $(".boat").attr('src', itemSpritesLarge[0].getImage().toDataURL()); 
         $(".key").attr('src', itemSpritesLarge[2].getImage().toDataURL()); 
+        $(".gate").attr('src', itemSpritesLarge[4].getImage().toDataURL()); 
 
+        $(".diamond").attr('src', itemSpritesLarge[3].getImage().toDataURL()); 
         $(".player").attr('src', playerSpritesLarge[0].getImage().toDataURL()); 
         
         contentFill(context);
@@ -305,6 +328,7 @@ function drawSelectionRect(context, x, y) {
     context.rect(Math.floor(x/tileSize)*tileSize , Math.floor(y/tileSize)*tileSize, 24, 24);
     context.lineWidth = 5;
     context.stroke();   
+
 }
 
 /**
@@ -315,6 +339,7 @@ function drawSelectionRect(context, x, y) {
 function contentFill(context) {
     context.fillStyle = '#a6e26b';
     context.fillRect(0, 0, 804, 804);
+
 }
 
 /**
@@ -373,7 +398,11 @@ function waterFill(ctx) {
  * @param {*} sprite to translate
  */
 function translate(sprite) {
-    return sprite == 20 ? 1 : (sprite == 22 || sprite == 10) ? 5 : (sprite == 1 || sprite == 11) ? 6 : (sprite==3) ? 0 : (sprite==2) ? 4 : 3;
+    return sprite == 20 ? 1 : 
+    (sprite == 22 || sprite == 10) ? 5 : 
+    (sprite == 1 || sprite == 11) ? 6 : 
+    (sprite==3) ? 0 : 
+    (sprite==2) ? 4 : 3;
 }
 
 /**
@@ -413,28 +442,28 @@ function selectMenuItems(value)
 
     switch (value) {
         case FIELD:
-            setMenuItems(true, true, true, true, true, false, false, true, true, true);
+            setMenuItems(true, true, true, true, true, false, false, true, true, true, true, true);
             break;
         case FLOWER:
-            setMenuItems(true, true, true, true, false, true, false, false, false, false);
+            setMenuItems(true, true, true, true, false, true, false, false, false, false, false, false);
             break;
         case SNAG:
-            setMenuItems(false, true, true, true, false, true, false, false, false, false);
+            setMenuItems(false, true, true, true, false, true, false, false, false, false, false, false);
             break;
         case BOAT:
-            setMenuItems(true, true, true, true, true, true, false, false, false, false);
+            setMenuItems(true, true, true, true, true, true, false, false, false, false, false, false);
             break;        
         case AXE:
-            setMenuItems(true, true, true, true, true, true, false, false, true, true);
+            setMenuItems(true, true, true, true, true, true, false, false, true, true, false, false);
             break;        
         case TREE:
-            setMenuItems(true, false, true, true, true, false, false, false, false, false);
+            setMenuItems(true, false, true, true, true, false, false, false, false, false, false, false);
             break;
         case SHRUB:
-            setMenuItems(true, true, true, false, true, true, false, false, false, false);
+            setMenuItems(true, true, true, false, true, true, false, false, false, false, false, false);
             break;
         case WATER:
-            setMenuItems(true, true, false, true, true, true, true, false, false, false);
+            setMenuItems(true, true, false, true, true, true, true, false, false, false, false, false);
             break;
 
     }
@@ -446,7 +475,7 @@ function selectMenuItems(value)
  */
 function resetToolMenu() {
 
-    setMenuItems(false, false, false, false, false, false, false, false, false, false);
+    setMenuItems(false, false, false, false, false, false, false, false, false, false, false, false);
 
 }
 
@@ -463,8 +492,10 @@ function resetToolMenu() {
  * @param {*} axe 'true' the axe is selected
  * @param {*} key 'true' the key is selected
  * @param {*} player The player opacity
+ * @param {*} diamond The diamond opacity
+ * @param {*} gate The diamond opacity
  */
-function setMenuItems(snag, tree, water, shrub, flower, field, boat, axe, key, player){
+function setMenuItems(snag, tree, water, shrub, flower, field, boat, axe, key, player, diamond, gate ){
  
     $(".snag").css({ opacity: snag ? 1.0 : 0.5 });
     $(".tree").css({ opacity: tree ? 1.0 : 0.5 });
@@ -475,6 +506,8 @@ function setMenuItems(snag, tree, water, shrub, flower, field, boat, axe, key, p
     $(".axe").css({ opacity: axe ? 1.0 : 0.5 });
     $(".key").css({ opacity: key ? 1.0 : 0.5 });
     $(".player").css({ opacity: player ? 1.0 : 0.5 });
+    $(".diamond").css({ opacity: diamond ? 1.0 : 0.5 });
+    $(".gate").css({ opacity: gate ? 1.0 : 0.5 });
 
     $(".waterFiller").css("background-color", water ? "rgb(93,150,199)" : "rgb(141,180,216)");
     $(".fieldFiller").css("background-color", field ? "rgb(166,226,107)" : "rgb(177,231,126)");
