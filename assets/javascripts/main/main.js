@@ -81,20 +81,20 @@ $('.save').on('click', function(e) {
         data.push(line);
 
     }
- 
-    try {
-        var fileutil = new $fileutil(document);
+    var fileutil = new $fileutil(document);
 
-        fileutil.saveAs(data, "level.map");
-
-    } catch (e) {
-        alert(e);
-    }
+    fileutil.saveAs(data, "level.map");
 
     return false;
+    
 });
 
 $('.load').on('click', function(e) {
+    var fileutil = new $fileutil(document);
+
+    fileutil.load(new function() {
+        
+    });
 
     return false;
   

@@ -38,22 +38,18 @@ FileUtil.prototype.load = function(callback) {
     var loadButton = this._document.createElementNS("http://www.w3.org/1999/xhtml", "input");
     
     loadButton.setAttribute("type", "file");
-   
-    var click = function(node) {
-        var event = new MouseEvent("click");
-        node.dispatchEvent(event);
-    }
-
-    loadButton.on('change', function() {
+ 
+    loadButton.addEventListener('change', function() {
         var files = $(this)[0].files;
     
+        alert('change');
         callback(files);
     
         return false;
     
-    });
+    }, false);
 
-    click(loadButton);
+    loadButton.click();
 
 };
 
