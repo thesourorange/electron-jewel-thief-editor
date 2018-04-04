@@ -93,6 +93,16 @@ $('.load').on('click', function(e) {
             var fileURL = URL.createObjectURL(file);
 
             loadMap(fileURL);
+            
+            pos = {
+                x:-1,
+                y:-1
+            }
+            var context = $('#canvas')[0].getContext('2d');
+
+            contentFill(context);
+            waterFill(context);
+            landFill(context);
 
         });
         
