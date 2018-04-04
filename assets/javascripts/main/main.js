@@ -50,12 +50,7 @@ var pos = {
     y:-1
 }
 
-$.get('assets/maps/basic.map', function(data) {
-    var lines = data.split(/\r?\n/);
-    for (var iLine in lines) {
-        map.push(lines[iLine].split(/\s/));
-     }
-}, 'text');
+loadMap('assets/maps/basic.map');
 
 $('.reset').on('click', function(e) {
 
@@ -91,11 +86,21 @@ $('.save').on('click', function(e) {
 
 $('.load').on('click', function(e) {
     var fileutil = new $fileutil(document);
+ 
+    try {
+    fileutil.load(function(files) {
+        Array.prototype.slice.call(files).forEach(function(file) { 
+            var fileURL = URL.createObjectURL(file);
 
-    fileutil.load(new function() {
+            loadMap(fileURL);
+
+        });
         
     });
 
+} catch (e) {
+    alert(e);
+}
     return false;
   
 });
@@ -244,6 +249,21 @@ $(document).ready(function() {
     window.addEventListener('keyup', doKeyUp, true);
 
 });
+
+/**
+ * 
+ * @param {Load the Map into Memory} uri 
+ */
+function loadMap(uri) {
+    
+    $.get(uri, function(data) {
+        var lines = data.split(/\r?\n/);
+        for (var iLine in lines) {
+            map.push(lines[iLine].split(/\s/));
+        }
+    }, 'text');
+
+}
 
 /**
  * The Game Loop

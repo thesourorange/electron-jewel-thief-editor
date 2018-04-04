@@ -42,7 +42,6 @@ FileUtil.prototype.load = function(callback) {
     loadButton.addEventListener('change', function() {
         var files = $(this)[0].files;
     
-        alert('change');
         callback(files);
     
         return false;
