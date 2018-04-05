@@ -50,8 +50,6 @@ var pos = {
     y:-1
 }
 
-loadMap('assets/maps/basic.map');
-
 $('.reset').on('click', function(e) {
 
     return false;
@@ -72,7 +70,7 @@ $('.save').on('click', function(e) {
 
         }
 
-        line += "\r\n";
+        line += (xMap < 40 - 1) ? "\r\n" : "";
         data.push(line);
 
     }
@@ -87,30 +85,26 @@ $('.save').on('click', function(e) {
 $('.load').on('click', function(e) {
     var fileutil = new $fileutil(document);
  
-    try {
     fileutil.load(function(files) {
         Array.prototype.slice.call(files).forEach(function(file) { 
             var fileURL = URL.createObjectURL(file);
-
-            loadMap(fileURL);
-            
-            pos = {
-                x:-1,
-                y:-1
-            }
-            var context = $('#canvas')[0].getContext('2d');
-
-            contentFill(context);
-            waterFill(context);
-            landFill(context);
-
+            loadMap(fileURL, function() {
+                pos = {
+                    x:-1,
+                    y:-1
+                }
+      
+                var context = $('#canvas')[0].getContext('2d');
+                
+                contentFill(context); 
+                waterFill(context);
+                landFill(context);
+           });
+        
         });
         
     });
 
-} catch (e) {
-    alert(e);
-}
     return false;
   
 });
@@ -253,10 +247,12 @@ $(document).ready(function() {
   
     resetToolMenu();
 
-    window.requestAnimationFrame(gameTicker);
-  
-    window.addEventListener('keydown', doKeyDown, true);
-    window.addEventListener('keyup', doKeyUp, true);
+    loadMap('assets/maps/basic.map', function() {   
+        window.requestAnimationFrame(gameTicker);
+        
+        window.addEventListener('keydown', doKeyDown, true);
+        window.addEventListener('keyup', doKeyUp, true);
+    });
 
 });
 
@@ -264,13 +260,17 @@ $(document).ready(function() {
  * 
  * @param {Load the Map into Memory} uri 
  */
-function loadMap(uri) {
+function loadMap(uri, callback) {
     
+    map = [];
+
     $.get(uri, function(data) {
         var lines = data.split(/\r?\n/);
         for (var iLine in lines) {
             map.push(lines[iLine].split(/\s/));
         }
+        callback();
+
     }, 'text');
 
 }
