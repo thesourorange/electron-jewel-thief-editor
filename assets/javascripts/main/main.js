@@ -235,7 +235,9 @@ $(document).ready(function() {
     createSpriteBuffer(0, itemSpritesSmall, 'assets/images/items.gif', $tile.BOAT, 0, 16, 16, 16, 16, 16);
     createSpriteBuffer(1, itemSpritesSmall, 'assets/images/items.gif', $tile.AXE, 16, 16, 16, 16, 16, 16);
     createSpriteBuffer(2, itemSpritesSmall, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
-    createSpriteBuffer(3, itemSpritesSmall, 'assets/images/diamond.gif', $tile.DIAMOND, 0, 0, 32, 32, 16, 16);
+    createSpriteBuffer(3, itemSpritesSmall, 'assets/images/diamond.gif', $tile.DIAMOND, 0, 0, 16, 16, 16, 16);
+    createSpriteBuffer(4, itemSpritesSmall, 'assets/images/testtileset.gif', $tile.GATE, 48, 16, 16, 16, 16, 16);
+    createSpriteBuffer(5, itemSpritesSmall, 'assets/images/playersprites.gif.gif', $tile.PLAYER, 0, 0, 16, 16, 16, 16);
 
     createSpriteBuffer(0, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.BOAT, 0, 32, 32, 32, 32, 32);
     createSpriteBuffer(1, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.AXE, 32, 32, 32, 32, 32, 32);
@@ -243,7 +245,7 @@ $(document).ready(function() {
     createSpriteBuffer(3, itemSpritesLarge, 'assets/images/diamondLarge.gif', $tile.DIAMOND, 0, 0, 32, 32, 32, 32);
     createSpriteBuffer(4, itemSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.GATE, 96, 32, 32, 32, 32, 32);
 
-    createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerSpritesLarge.gif', $tile.KEY, 0, 32, 32, 32, 32, 32);
+    createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerSpritesLarge.gif', $tile.PLAYER, 0, 32, 32, 32, 32, 32);
   
     resetToolMenu();
 
@@ -392,8 +394,14 @@ function landFill(ctx) {
                 ctx.drawImage(itemSpritesSmall[0].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);                    
             } else if (sprite == 11) {
                 ctx.drawImage(itemSpritesSmall[1].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
+            } else if (sprite == 15) {
+                ctx.drawImage(itemSpritesSmall[4].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
+            } else if (sprite == 14) {
+                ctx.drawImage(itemSpritesSmall[3].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);        
+            } else if (sprite == 14) {
+                ctx.drawImage(itemSpritesSmall[3].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
             } 
-            
+    
         }  
 
     }
@@ -428,11 +436,12 @@ function waterFill(ctx) {
  * @param {*} sprite to translate
  */
 function translate(sprite) {
-    return sprite == 20 ? 1 : 
-    (sprite == 22 || sprite == 10) ? 5 : 
-    (sprite == 1 || sprite == 11) ? 6 : 
-    (sprite==3) ? 0 : 
-    (sprite==2) ? 4 : 3;
+    return sprite == TREE ? 1 : 
+    (sprite == WATER || sprite == BOAT) ? 5 : 
+    (sprite == FIELD || sprite == AXE || sprite == GATE || 
+     sprite == DIAMOND || sprite == KEY || sprite == PLAYER) ? 6 : 
+    (sprite == SNAG) ? 0 : 
+    (sprite == FLOWER) ? 4 : 3;
 }
 
 /**
