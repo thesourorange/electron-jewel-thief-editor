@@ -52,6 +52,14 @@ var pos = {
 
 $('.reset').on('click', function(e) {
 
+    resetMap(function() {   
+        window.requestAnimationFrame(gameTicker);
+        
+        window.addEventListener('keydown', doKeyDown, true);
+        window.addEventListener('keyup', doKeyUp, true);
+
+    });
+
     return false;
   
 });
@@ -99,6 +107,7 @@ $('.load').on('click', function(e) {
                 contentFill(context); 
                 waterFill(context);
                 landFill(context);
+
            });
         
         });
@@ -237,7 +246,7 @@ $(document).ready(function() {
     createSpriteBuffer(2, itemSpritesSmall, 'assets/images/items.gif', $tile.KEY, 32, 16, 16, 16, 16, 16);
     createSpriteBuffer(3, itemSpritesSmall, 'assets/images/diamond.gif', $tile.DIAMOND, 0, 0, 16, 16, 16, 16);
     createSpriteBuffer(4, itemSpritesSmall, 'assets/images/testtileset.gif', $tile.GATE, 48, 16, 16, 16, 16, 16);
-    createSpriteBuffer(5, itemSpritesSmall, 'assets/images/playersprites.gif.gif', $tile.PLAYER, 0, 0, 16, 16, 16, 16);
+    createSpriteBuffer(5, itemSpritesSmall, 'assets/images/playersprites.gif', $tile.PLAYER, 0, 0, 30, 30, 24, 24);
 
     createSpriteBuffer(0, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.BOAT, 0, 32, 32, 32, 32, 32);
     createSpriteBuffer(1, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.AXE, 32, 32, 32, 32, 32, 32);
@@ -249,16 +258,18 @@ $(document).ready(function() {
   
     resetToolMenu();
 
-    loadMap('assets/maps/basic.map', function() {   
+    resetMap(function() {   
         window.requestAnimationFrame(gameTicker);
         
         window.addEventListener('keydown', doKeyDown, true);
         window.addEventListener('keyup', doKeyUp, true);
+
     });
 
 });
 
 /**
+ * Load the Map
  * 
  * @param {Load the Map into Memory} uri 
  */
@@ -271,10 +282,39 @@ function loadMap(uri, callback) {
         for (var iLine in lines) {
             map.push(lines[iLine].split(/\s/));
         }
+
         callback();
 
     }, 'text');
 
+}
+
+/**
+ * Load the Map
+ * 
+ * @param {Load the Map into Memory} uri 
+ */
+function resetMap(callback) {
+
+    map = [];
+
+    for (var xMap = 0; xMap < 40; xMap++) {
+         var line = []  ;     
+        for (var yMap = 0; yMap < 40; yMap++) {
+            var cover = Math.floor((Math.random() * 100)) % 20;
+
+            line.push((xMap == 0 || xMap == 39 || yMap == 0 || yMap == 39) ? '20' :
+            (xMap == 19 && yMap == 19) ? PLAYER :         
+            cover < 18 ?  '1' : cover == 18 ? FLOWER : SHRUB);
+
+        }
+        
+        map.push(line);
+
+    }
+
+    callback();
+ 
 }
 
 /**
@@ -398,8 +438,10 @@ function landFill(ctx) {
                 ctx.drawImage(itemSpritesSmall[4].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
             } else if (sprite == 14) {
                 ctx.drawImage(itemSpritesSmall[3].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);        
-            } else if (sprite == 14) {
-                ctx.drawImage(itemSpritesSmall[3].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
+            } else if (sprite == 12) {
+                ctx.drawImage(itemSpritesSmall[2].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
+            } else if (sprite == 13) {
+                ctx.drawImage(itemSpritesSmall[5].getImage(), xMap * tileSize + 4, yMap * tileSize + 4);       
             } 
     
         }  
