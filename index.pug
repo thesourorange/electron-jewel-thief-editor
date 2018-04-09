@@ -10,7 +10,7 @@ block content
       div#drawButton(style="position:absolute; top:124px; left:8px; width:44px; height:14px;")
         a#draw.save(href="") Save
       div#drawButton(style="position:absolute; bottom:10px; left:8px; width:44px; height:14px;")
-        a#draw.play(href="") Play
+        a#draw.about(href="") About
     div(style="position:absolute; left:100px;")
       canvas#canvas(width="804" height="804" style="background-color:#fff; border: 3px solid green;")
     div(style="position:absolute; top:8px; right:6px; width:50px; bottom:9px; border: 3px solid green;  background: rgb(166,226,107); padding:8px;")
@@ -50,5 +50,7 @@ block content
       div.playerFiller(style="width:36; height:36; left:8px; top:4px; margin-bottom: 4px; background:rgb(166,226,107); border: 3px solid green; padding:6px;")
         a.selectPlayer(href="")
           img.player(style="width:32px; height:32px;")
+        
+  include assets/views/about.pug
 
   script(src="assets/javascripts/main/main.js")

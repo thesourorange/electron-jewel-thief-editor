@@ -118,6 +118,22 @@ $('.load').on('click', function(e) {
   
 });
 
+$('.about').on('click', function(e) {
+
+    $('.modal').css('display', 'block');
+
+    return false;
+
+});
+
+$('.close').on('click', function(e) {
+
+    $('.modal').css('display', 'none');
+
+    return false;
+
+});
+
 $('.selectSnag').on('click', function(e) {
 
     setTile(SNAG);
