@@ -121,6 +121,8 @@ $('.load').on('click', function(e) {
 $('.selectSnag').on('click', function(e) {
 
     setTile(SNAG);
+    selectMenuItems(SNAG);
+
     return false;
   
 });
@@ -128,6 +130,8 @@ $('.selectSnag').on('click', function(e) {
 $('.selectTree').on('click', function(e) {
 
     setTile(TREE);
+    selectMenuItems(TREE);
+
     return false;
   
 });
@@ -135,6 +139,8 @@ $('.selectTree').on('click', function(e) {
 $('.selectWater').on('click', function(e) {
 
     setTile(WATER);
+    selectMenuItems(WATER);
+
     return false;
   
 });
@@ -142,6 +148,8 @@ $('.selectWater').on('click', function(e) {
 $('.selectShrub').on('click', function(e) {
 
     setTile(SHRUB);
+    selectMenuItems(SHRUB);
+
     return false;
   
 });
@@ -149,6 +157,8 @@ $('.selectShrub').on('click', function(e) {
 $('.selectFlower').on('click', function(e) {
 
     setTile(FLOWER);
+    selectMenuItems(FLOWER);
+
     return false;
   
 });
@@ -156,6 +166,8 @@ $('.selectFlower').on('click', function(e) {
 $('.selectField').on('click', function(e) {
 
     setTile(FIELD);
+    selectMenuItems(FIELD);
+
     return false;
   
 });
@@ -163,6 +175,8 @@ $('.selectField').on('click', function(e) {
 $('.selectAxe').on('click', function(e) {
 
     setTile(AXE);
+    selectMenuItems(AXE);
+
     return false;
   
 });
@@ -170,6 +184,7 @@ $('.selectAxe').on('click', function(e) {
 $('.selectBoat').on('click', function(e) {
 
     setTile(BOAT);
+    selectMenuItems(BOAT);
     return false;
   
 });
@@ -177,6 +192,8 @@ $('.selectBoat').on('click', function(e) {
 $('.selectKey').on('click', function(e) {
 
     setTile(KEY);
+    selectMenuItems(KEY);
+
     return false;
   
 });
@@ -184,6 +201,8 @@ $('.selectKey').on('click', function(e) {
 $('.selectPlayer').on('click', function(e) {
 
     setTile(PLAYER);
+    selectMenuItems(PLAYER);
+    
     return false;    
   
 });
@@ -191,6 +210,8 @@ $('.selectPlayer').on('click', function(e) {
 $('.selectDiamond').on('click', function(e) {
 
     setTile(DIAMOND);
+    selectMenuItems(DIAMOND);
+
     return false;    
   
 });
@@ -198,6 +219,8 @@ $('.selectDiamond').on('click', function(e) {
 $('.selectGate').on('click', function(e) {
 
     setTile(GATE);
+    selectMenuItems(GATE);
+
     return false;    
   
 });
@@ -518,6 +541,11 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
 }
 
+/**
+ * Select Menu Items
+ * 
+ * @param {*} value the Cell Value - FIELD, TREE, KEY, etc
+ */
 function selectMenuItems(value)
 {
 
