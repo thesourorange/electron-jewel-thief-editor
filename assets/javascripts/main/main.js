@@ -45,6 +45,11 @@ var playerSpritesLarge = [];
 
 var start = null;
 
+var startPos = {
+    x:-1,
+    y:-1 
+}
+
 var pos = {
     x:-1,
     y:-1
@@ -241,21 +246,63 @@ $('.selectGate').on('click', function(e) {
   
 });
 
-$('#canvas')[0].addEventListener('mouseup', function(evt) {
+
+$('#canvas')[0].addEventListener('mousedown', function(evt) {
+
+    var mousePos = getMousePos($('#canvas')[0], evt);
+
+    startPos.x = mousePos.x;
+    startPos.y = mousePos.y;  
+   
+}, false);
+
+$('#canvas')[0].addEventListener("mousemove", function (evt) {
+
+    if (startPos.x == -1 || startPos.y == -1) {
+        return;
+    }
+
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
-
+    
     contentFill(context);
     waterFill(context);
     landFill(context);
     
-    drawSelectionRect(context, mousePos.x, mousePos.y);
-     
-    pos.x = Math.floor(mousePos.x/tileSize);
-    pos.y = Math.floor(mousePos.y/tileSize);
+    context.beginPath()
+    context.strokeStyle = '#ff6347';
+    context.rect(startPos.x, startPos.y, mousePos.x - startPos.x, mousePos.y - startPos.y);
+    context.lineWidth = 5;
+    context.stroke();  
+
+}, false);
+
+$('#canvas')[0].addEventListener('mouseup', function(evt) {
+    var mousePos = getMousePos($('#canvas')[0], evt);
+    var context = $('#canvas')[0].getContext('2d');
+
+    if (startPos.x == mousePos.x && startPos.y == mousePos.y) {
+        contentFill(context);
+        waterFill(context);
+        landFill(context);
+        
+        drawSelectionRect(context, mousePos.x, mousePos.y);
+        
+        pos.x = Math.floor(mousePos.x/tileSize);
+        pos.y = Math.floor(mousePos.y/tileSize);
+        
+        selectMenuItems(map[pos.x][pos.y]);
+
+    } else {
+        for (var xMap = 0; xMap < 40; xMap++) {
+            for (var yMap = 0; yMap < 40; yMap++) {
+            }
+        }    
     
-    selectMenuItems(map[pos.x][pos.y]);
-  
+    }
+
+    startPos.x = -1;
+    startPos.y = -1;
 
 }, false);
 
