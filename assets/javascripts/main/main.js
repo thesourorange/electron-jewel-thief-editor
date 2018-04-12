@@ -296,8 +296,15 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
     } else {
         for (var xMap = 0; xMap < 40; xMap++) {
             for (var yMap = 0; yMap < 40; yMap++) {
+                 var x = Math.floor(xMap/tileSize)*tileSize;
+                 var y =  Math.floor(yMap/tileSize)*tileSize;
+                 
             }
-        }    
+        } 
+
+        contentFill(context);
+        waterFill(context);
+        landFill(context);   
     
     }
 
@@ -687,48 +694,24 @@ function setMenuItems(snag, tree, water, shrub, flower, field, boat, axe, key, p
 }
 
 /**
- * Process the Key Down Event
+ * Detecting rectanlge overlap
  * 
- * @param {*} event The Keyboard Event
+ * @param {*} x1 'x' coordinate - rectangle 1 
+ * @param {*} y1 'y' coordinate - rectangle 1 
+ * @param {*} w1 'width' - rectangle 1 
+ * @param {*} h1 'height' - rectangle 1 
+ * @param {*} x2 'x' coordinate - rectangle 2 
+ * @param {*} y2 'y' coordinate - rectangle 2
+ * @param {*} w2 'width' - rectangle 2 
+ * @param {*} h2 'height' - rectangle 2 
  */
-function doKeyDown(event) {
-
-    switch (event.keyCode) {
-        case 37:  /* Left arrow was pressed */
-            direction = 1;
-        break;
-        case 38:  /* Up arrow was pressed */
-            direction = 2;
-        break;
-        case 39:  /* Right arrow was pressed */
-            direction = 3;
-        break;
-        case 40:  /* Down arrow was pressed */
-            direction = 4;
-        break;
-    }    
-
-}
-
-/**
- * Process the Key Up Event
- * @param {*} event The Keyboard Event
- */
-function doKeyUp(event) {
-
-    switch (event.keyCode) {
-        case 37:  /* Left arrow was pressed */
-            direction = -1;
-        break;
-        case 38:  /* Up arrow was pressed */
-            direction = -2;
-        break;
-        case 39:  /* Right arrow was pressed */
-            direction = -3;
-        break;
-        case 40:  /* Down arrow was pressed */
-            direction = -4;
-        break;
-    }    
-
+function overlap(x1, y1, w1, h1, x2, y2, w2, h2) {
+    var dx = (x1 < x2) ? x1 + w1 - x2 : x2 + w2 - x1;
+    if (dx < 0) return 0;
+  
+    var dy = (y1 < y2) ? y1 + h1 - y2 : y2 + h2 - y1;
+    if (dy < 0) return 0;
+  
+    return dx * dy;
+  
 }
