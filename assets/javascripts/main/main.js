@@ -59,10 +59,6 @@ $('.reset').on('click', function(e) {
 
     resetMap(function() {   
         window.requestAnimationFrame(gameTicker);
-        
-        window.addEventListener('keydown', doKeyDown, true);
-        window.addEventListener('keyup', doKeyUp, true);
-
     });
 
     return false;
@@ -281,11 +277,12 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
 
+    contentFill(context);
+    waterFill(context);
+    landFill(context);
+
     if (startPos.x == mousePos.x && startPos.y == mousePos.y) {
-        contentFill(context);
-        waterFill(context);
-        landFill(context);
-        
+       
         drawSelectionRect(context, mousePos.x, mousePos.y);
         
         pos.x = Math.floor(mousePos.x/tileSize);
@@ -293,18 +290,35 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
         
         selectMenuItems(map[pos.x][pos.y]);
 
-    } else {
+    } else {  
+        var rect = { x: 0,
+                     y: 0,
+                     w : 0,
+                     h : 0};  
+        
         for (var xMap = 0; xMap < 40; xMap++) {
             for (var yMap = 0; yMap < 40; yMap++) {
-                 var x = Math.floor(xMap/tileSize)*tileSize;
-                 var y =  Math.floor(yMap/tileSize)*tileSize;
-                 
+                 var x = xMap*tileSize;
+                 var y = yMap*tileSize;
+
+                if ((x > startPos.x && x+tileSize < mousePos.x) &&
+                    (y > startPos.y && y+tileSize < mousePos.y)) {
+                
+                    rect.x =  x < rect.x || rect.w == 0 ? x : rect.x;
+                    rect.y =  y < rect.y || rect.h == 0 ? y : rect.y;
+
+                    rect.w = x + tileSize - rect.x > rect.w ? x + tileSize - rect.x : rect.w;
+                    rect.h = y + tileSize - rect.y > rect.h ? y + tileSize - rect.y : rect.h;
+                    
+                    fillSelectionRect(context, x, y);
+                
+                }
+
             }
+            
         } 
 
-        contentFill(context);
-        waterFill(context);
-        landFill(context);   
+        drawSurroundingSelectionRect(context, rect.x, rect.y, rect.w, rect.h);
     
     }
 
@@ -480,6 +494,23 @@ function setTile(tile) {
 }
 
 /**
+ * Draw the Surrounding Selection Rectangle
+ * 
+ * @param {*} context the Graphics Context
+ * @param {*} x the 'X' coordinate
+ * @param {*} y the 'Y' coordinate
+ */
+function drawSurroundingSelectionRect(context, x, y, w , h) {
+    context.beginPath()
+    context.strokeStyle = '#ff6347';
+
+    context.rect(Math.floor(x/tileSize)*tileSize , Math.floor(y/tileSize)*tileSize, w, h);
+    context.lineWidth = 5;
+    context.stroke();   
+
+}
+
+/**
  * Draw the Selection Rectangle
  * 
  * @param {*} context the Graphics Context
@@ -487,13 +518,23 @@ function setTile(tile) {
  * @param {*} y the 'Y' coordinate
  */
 function drawSelectionRect(context, x, y) {
-    context.beginPath()
-    context.strokeStyle = '#ff6347';
 
-    context.rect(Math.floor(x/tileSize)*tileSize , Math.floor(y/tileSize)*tileSize, 24, 24);
-    context.lineWidth = 5;
-    context.stroke();   
+    drawSurroundingSelectionRect(context, x,y, 24, 24);
+    context.fillStyle = 'rgba(255, 99, 71, 0.2)';
+    context.fillRect(Math.floor(x/tileSize)*tileSize , Math.floor(y/tileSize)*tileSize, 24, 24);
+ 
+}
 
+/**
+ * Fill the Selection Rectangle
+ * 
+ * @param {*} context the Graphics Context
+ * @param {*} x the 'X' coordinate
+ * @param {*} y the 'Y' coordinate
+ */
+function fillSelectionRect(context, x, y) {
+    context.fillStyle = 'rgba(255, 99, 71, 0.2)';
+    context.fillRect(Math.floor(x/tileSize)*tileSize , Math.floor(y/tileSize)*tileSize, 24, 24);
 }
 
 /**
