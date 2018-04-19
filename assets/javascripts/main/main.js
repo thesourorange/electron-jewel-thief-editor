@@ -50,10 +50,7 @@ var startPos = {
     y:-1 
 }
 
-var pos = {
-    x:-1,
-    y:-1
-}
+var selection = [];
 
 $('.reset').on('click', function(e) {
 
@@ -98,11 +95,9 @@ $('.load').on('click', function(e) {
         Array.prototype.slice.call(files).forEach(function(file) { 
             var fileURL = URL.createObjectURL(file);
             loadMap(fileURL, function() {
-                pos = {
-                    x:-1,
-                    y:-1
-                }
-      
+
+                selection = [];
+
                 var context = $('#canvas')[0].getContext('2d');
                 
                 contentFill(context); 
@@ -277,6 +272,8 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
 
+    selection = [];
+
     contentFill(context);
     waterFill(context);
     landFill(context);
@@ -285,9 +282,11 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
        
         drawSelectionRect(context, mousePos.x, mousePos.y);
         
-        pos.x = Math.floor(mousePos.x/tileSize);
-        pos.y = Math.floor(mousePos.y/tileSize);
-        
+        var pos = {x: Math.floor(mousePos.x/tileSize),
+                   y:  Math.floor(mousePos.y/tileSize)}
+
+        selection.push(pos);
+
         selectMenuItems(map[pos.x][pos.y]);
 
     } else {  
@@ -310,6 +309,13 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
                     rect.w = x + tileSize - rect.x > rect.w ? x + tileSize - rect.x : rect.w;
                     rect.h = y + tileSize - rect.y > rect.h ? y + tileSize - rect.y : rect.h;
                     
+                    var pos = {
+                        x:xMap,
+                        y:yMap
+                    };
+
+                    selection.push(pos);
+
                     fillSelectionRect(context, x, y);
                 
                 }
@@ -318,8 +324,9 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
             
         } 
 
-        drawSurroundingSelectionRect(context, rect.x, rect.y, rect.w, rect.h);
-    
+        drawSurroundingSelectionRect(context, rect.x, rect.y, rect.w+2, rect.h+2);
+        setMenuItems(true, true, true, true, true, true, false, false, false, false, false, false);
+ 
     }
 
     startPos.x = -1;
@@ -481,15 +488,39 @@ function getMousePos(canvas, evt) {
  * @param {*} tile to set
  */
 function setTile(tile) {
-    map[pos.x][pos.y] = tile;
+
+    Array.prototype.slice.call(selection).forEach(function(pos) {   
+        map[pos.x][pos.y] = tile;
+    });
 
     var context = $('#canvas')[0].getContext('2d');
 
     contentFill(context);
     waterFill(context);
     landFill(context);
+ 
+    var rect = { x: 0,
+        y: 0,
+        w : 0,
+        h : 0};  
 
-    drawSelectionRect(context, pos.x*tileSize, pos.y*tileSize);
+    Array.prototype.slice.call(selection).forEach(function(pos) {
+        var x = pos.x*tileSize;
+        var y = pos.y*tileSize;
+
+        rect.x =  x < rect.x || rect.w == 0 ? x : rect.x;
+        rect.y =  y < rect.y || rect.h == 0 ? y : rect.y;
+
+        rect.w = x + tileSize - rect.x > rect.w ? x + tileSize - rect.x : rect.w;
+        rect.h = y + tileSize - rect.y > rect.h ? y + tileSize - rect.y : rect.h;
+
+        if (selection.length == 1) {   
+            drawSelectionRect(context, x, y);
+        } else {
+            fillSelectionRect(context, x, y);
+        }
+
+     });
 
 }
 
