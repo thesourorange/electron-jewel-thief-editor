@@ -522,14 +522,12 @@ function setTile(tile) {
         rect.w = x + tileSize - rect.x > rect.w ? x + tileSize - rect.x : rect.w;
         rect.h = y + tileSize - rect.y > rect.h ? y + tileSize - rect.y : rect.h;
 
-        if (selection.length == 1) {   
-            drawSelectionRect(context, x, y);
-        } else {
-            fillSelectionRect(context, x, y);
-        }
+        fillSelectionRect(context, x, y);
 
      });
 
+    drawSurroundingSelectionRect(context, rect.x + 3, rect.y + 3, rect.w + 4, rect.h + 4);
+ 
 }
 
 /**
@@ -539,7 +537,7 @@ function setTile(tile) {
  * @param {*} x the 'X' coordinate
  * @param {*} y the 'Y' coordinate
  */
-function drawSurroundingSelectionRect(context, x, y, w , h) {
+function drawSurroundingSelectionRect(context, x, y, w, h) {
     context.beginPath()
     context.strokeStyle = '#ff6347';
 
