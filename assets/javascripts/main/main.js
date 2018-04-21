@@ -263,6 +263,7 @@ $('#canvas')[0].addEventListener("mousemove", function (evt) {
     context.beginPath()
     context.strokeStyle = '#ff6347';
     context.rect(startPos.x, startPos.y, mousePos.x - startPos.x, mousePos.y - startPos.y);
+
     context.lineWidth = 5;
     context.stroke();  
 
@@ -295,13 +296,20 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
                      w : 0,
                      h : 0};  
         
+        var bound = {
+            x:(startPos.x < mousePos.x) ? startPos.x : mousePos.x,
+            y:(startPos.y < mousePos.y) ? startPos.y : mousePos.y,
+            dx:(mousePos.x < startPos.x) ? startPos.x : mousePos.x,
+            dy:(mousePos.y < startPos.y) ? startPos.y : mousePos.y
+        }
+
         for (var xMap = 0; xMap < 40; xMap++) {
             for (var yMap = 0; yMap < 40; yMap++) {
                  var x = xMap*tileSize;
                  var y = yMap*tileSize;
 
-                if ((x > startPos.x && x+tileSize < mousePos.x) &&
-                    (y > startPos.y && y+tileSize < mousePos.y)) {
+                if ((x > bound.x && x+tileSize < bound.dx) &&
+                    (y > bound.y && y+tileSize < bound.dy)) {
                 
                     rect.x =  x < rect.x || rect.w == 0 ? x : rect.x;
                     rect.y =  y < rect.y || rect.h == 0 ? y : rect.y;
