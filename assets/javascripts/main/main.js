@@ -332,7 +332,8 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
             
         } 
 
-        drawSurroundingSelectionRect(context, rect.x, rect.y, rect.w+2, rect.h+2);
+        drawSurroundingSelectionRect(context, rect.x, rect.y, rect.w+4, rect.h+4);
+        
         setMenuItems(true, true, true, true, true, true, false, false, false, false, false, false);
  
     }
@@ -526,7 +527,7 @@ function setTile(tile) {
 
      });
 
-    drawSurroundingSelectionRect(context, rect.x + 3, rect.y + 3, rect.w + 4, rect.h + 4);
+    drawSurroundingSelectionRect(context, rect.x, rect.y, rect.w + 4, rect.h + 4);
  
 }
 
