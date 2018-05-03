@@ -22,8 +22,7 @@ FileUtil.prototype.saveAs = function(data, fileName) {
         node.dispatchEvent(event);
     }
 
-    var properties = {type: 'text/plain'}; 
-    file = new File(data, fileName, properties);
+    file = new File(data, fileName, {type: 'text/plain'});
 
     var fileURL = URL.createObjectURL(file);
 

@@ -1,7 +1,7 @@
 /** 
- * Jewel Thief 
+ * Jewel Thief Editor
  * 
- * Electron 
+ * Editor for the Jewel Thief Game
  * 
  */
 const $ = require('jquery');
