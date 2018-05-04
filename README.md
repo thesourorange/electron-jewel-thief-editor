@@ -1,12 +1,10 @@
-# Jewel Thief
+# Jewel Thief Editor
 
-**Application (Game) that demonstrates the Cnavas and Buffered Graphics**
+**Application (Game) that demonstrates the Canvas and Buffered Graphics**
 
-This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start) within the Electron documentation.
+This is a minimal Electron application to 
 
-**Use this app along with the [Electron API Demos](http://electron.atom.io/#get-started) app for API code examples to help you get started.**
-
-A basic Electron application needs just these files:
+A application needs just these files:
 
 - `package.json` - Points to the app's main file and lists its details and dependencies.
 - `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
@@ -16,17 +14,19 @@ You can learn more about each of these components within the [Quick Start Guide]
 
 ## To Use
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on the computer. From the command line:
 
 ```bash
 # Clone this repository
-git clone https://github.com/electron/electron-quick-start
+git clone https://github.com/thesourorange/electron-jewel-thief-editor.git
 # Go into the repository
 cd electron-quick-start
 # Install dependencies
 npm install
 # Run the app
 npm start
+# Package Application for windows
+npm run package-win
 ```
 
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.

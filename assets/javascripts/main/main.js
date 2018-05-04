@@ -1,7 +1,9 @@
 /** 
  * Jewel Thief Editor
  * 
- * Editor for the Jewel Thief Game
+ * Editor for the Jewel Thief Game Editor
+ * 
+ * @author Neil Brittliff
  * 
  */
 const $ = require('jquery');
@@ -53,11 +55,14 @@ var startPos = {
 var selection = [];
 
 $('.reset').on('click', function(e) {
+    var context = $('#canvas')[0].getContext('2d');
+ 
+    resetMap();
 
-    resetMap(function() {   
-        window.requestAnimationFrame(gameTicker);
-    });
-
+    contentFill(context); 
+    waterFill(context);
+    landFill(context);
+ 
     return false;
   
 });
@@ -348,6 +353,8 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
  */
 $(document).ready(function() {
  
+    resetMap();
+
     createSpriteBuffer(0, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 16, 16, 16, 16, 16, 16);
     createSpriteBuffer(1, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 0, 16, 16, 16, 16, 16);
     createSpriteBuffer(2, mapSpritesSmall, 'assets/images/testtileset.gif', $tile.BLOCKED, 32, 16, 16, 16, 16, 16);
@@ -376,19 +383,21 @@ $(document).ready(function() {
     createSpriteBuffer(2, itemSpritesLarge, 'assets/images/itemsLarge.gif', $tile.KEY, 64, 32, 32, 32, 32, 32);
     createSpriteBuffer(3, itemSpritesLarge, 'assets/images/diamondLarge.gif', $tile.DIAMOND, 0, 0, 32, 32, 32, 32);
     createSpriteBuffer(4, itemSpritesLarge, 'assets/images/testtilesetlarge.gif', $tile.GATE, 96, 32, 32, 32, 32, 32);
-
-    createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerSpritesLarge.gif', $tile.PLAYER, 0, 32, 32, 32, 32, 32);
+    createSpriteBuffer(0, playerSpritesLarge, 'assets/images/playerspritesLarge.gif', $tile.PLAYER, 0, 32, 32, 32, 32, 32);
   
     resetToolMenu();
 
-    resetMap(function() {   
-        window.requestAnimationFrame(gameTicker);
-        
-        window.addEventListener('keydown', doKeyDown, true);
-        window.addEventListener('keyup', doKeyUp, true);
-
-    });
-
+    var image = new Image();
+ 
+    image.src = 'assets/images/logo.gif';  
+    image.onload = function() {
+ 
+        var context = $('#canvas')[0].getContext('2d');
+        context.drawImage(image, 0, 0, this.width, this.height, 200, 200, 384, 384);
+        window.requestAnimationFrame(setupMap);
+   
+    }   
+    
 });
 
 /**
@@ -414,12 +423,11 @@ function loadMap(uri, callback) {
 
 /**
  * Load the Map
- * 
- * @param {Load the Map into Memory} uri 
- */
-function resetMap(callback) {
 
-    map = [];
+ */
+function resetMap() {
+
+     map = [];
 
     for (var xMap = 0; xMap < 40; xMap++) {
          var line = []  ;     
@@ -433,26 +441,19 @@ function resetMap(callback) {
         }
         
         map.push(line);
-
+  
     }
 
-    callback();
- 
 }
 
-/**
- * The Game Loop
- * 
- * @param {*} timestamp 
- */
-function gameTicker(timestamp) {
+function setupMap(timestamp) {
 
     start =  (!start) ? timestamp : start;
 
-    if (timestamp - start > 50) {
-        var context = $('#canvas')[0].getContext('2d');
-
-        $(".snag").attr('src', mapSpritesLarge[0].getImage().toDataURL()); 
+    var progress = timestamp - start;
+    
+    if (progress > 3000) {
+       $(".snag").attr('src', mapSpritesLarge[0].getImage().toDataURL()); 
         $(".tree").attr('src', mapSpritesLarge[1].getImage().toDataURL()); 
         $(".water").attr('src', mapSpritesLarge[2].getImage().toDataURL()); 
         $(".shrub").attr('src', mapSpritesLarge[3].getImage().toDataURL()); 
@@ -460,22 +461,31 @@ function gameTicker(timestamp) {
         $(".field").attr('src', mapSpritesLarge[5].getImage().toDataURL()); 
  
         $(".axe").attr('src', itemSpritesLarge[1].getImage().toDataURL()); 
-        $(".boat").attr('src', itemSpritesLarge[0].getImage().toDataURL()); 
+        $(".boat").attr('src', itemSpritesLarge[0].getImage().toDataURL());
+       
+        
         $(".key").attr('src', itemSpritesLarge[2].getImage().toDataURL()); 
         $(".gate").attr('src', itemSpritesLarge[4].getImage().toDataURL()); 
-
+ 
         $(".diamond").attr('src', itemSpritesLarge[3].getImage().toDataURL()); 
         $(".player").attr('src', playerSpritesLarge[0].getImage().toDataURL()); 
-        
-        contentFill(context);
+ 
+        var context = $('#canvas')[0].getContext('2d');
+        context.clearRect(0, 0, $('#canvas')[0].width, $('#canvas')[0].height);
+
+        contentFill(context); 
         waterFill(context);
         landFill(context);
 
+        $("#menu").css("display", "inline-block");
+        $("#objects").css("display", "inline-block");
+        $('#editor').css("border", "3px solid green");
+
     } else {
-        window.requestAnimationFrame(gameTicker);
+        window.requestAnimationFrame(setupMap);
     }
 
-} 
+}
 
 /**
  * Get the Canvas Mouse Position
