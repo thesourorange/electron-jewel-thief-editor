@@ -13,12 +13,13 @@ var mainWindow = null;
 
 function createWindow () {
    mainWindow = new BrowserWindow({width: 800 + 198, height: 800 + 56, resizable: false, autoHideMenuBar: true})
-
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.pug'),
-    protocol: 'file:',
-    slashes: true
-  }))
+   mainWindow.setMenu(null);
+ 
+    mainWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'index.pug'),
+      protocol: 'file:',
+      slashes: true
+    }))
 
   mainWindow.on('closed', function () {
     mainWindow = null
