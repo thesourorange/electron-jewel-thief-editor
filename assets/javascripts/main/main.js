@@ -67,7 +67,7 @@ $('.reset').on('click', function(e) {
   
 });
 
-$('.save').on('click', function(e) {
+$('.save').on('click', (e) =>  {
 
     var data = [];
   
@@ -93,13 +93,14 @@ $('.save').on('click', function(e) {
     
 });
 
-$('.load').on('click', function(e) {
+$('.load').on('click', (e) => {
     var fileutil = new $fileutil(document);
- 
+
     fileutil.load(function(files) {
-        Array.prototype.slice.call(files).forEach(function(file) { 
+       Array.prototype.slice.call(files).forEach((file) => { 
             var fileURL = URL.createObjectURL(file);
-            loadMap(fileURL, function() {
+
+            loadMap(fileURL, () => {
 
                 selection = [];
 
@@ -119,7 +120,7 @@ $('.load').on('click', function(e) {
   
 });
 
-$('.about').on('click', function(e) {
+$('.about').on('click', (e) => {
 
     $('.modal').css('display', 'block');
 
@@ -127,7 +128,7 @@ $('.about').on('click', function(e) {
 
 });
 
-$('.close').on('click', function(e) {
+$('.close').on('click', (e) => {
 
     $('.modal').css('display', 'none');
 
@@ -135,7 +136,7 @@ $('.close').on('click', function(e) {
 
 });
 
-$('.selectSnag').on('click', function(e) {
+$('.selectSnag').on('click', (e) => {
 
     setTile(SNAG);
     selectMenuItems(SNAG);
@@ -144,7 +145,7 @@ $('.selectSnag').on('click', function(e) {
   
 });
 
-$('.selectTree').on('click', function(e) {
+$('.selectTree').on('click', (e) => {
 
     setTile(TREE);
     selectMenuItems(TREE);
@@ -153,7 +154,7 @@ $('.selectTree').on('click', function(e) {
   
 });
 
-$('.selectWater').on('click', function(e) {
+$('.selectWater').on('click', (e) => {
 
     setTile(WATER);
     selectMenuItems(WATER);
@@ -162,7 +163,7 @@ $('.selectWater').on('click', function(e) {
   
 });
 
-$('.selectShrub').on('click', function(e) {
+$('.selectShrub').on('click', (e) => {
 
     setTile(SHRUB);
     selectMenuItems(SHRUB);
@@ -171,7 +172,7 @@ $('.selectShrub').on('click', function(e) {
   
 });
 
-$('.selectFlower').on('click', function(e) {
+$('.selectFlower').on('click', (e) => {
 
     setTile(FLOWER);
     selectMenuItems(FLOWER);
@@ -180,7 +181,7 @@ $('.selectFlower').on('click', function(e) {
   
 });
 
-$('.selectField').on('click', function(e) {
+$('.selectField').on('click', (e) => {
 
     setTile(FIELD);
     selectMenuItems(FIELD);
@@ -189,7 +190,7 @@ $('.selectField').on('click', function(e) {
   
 });
 
-$('.selectAxe').on('click', function(e) {
+$('.selectAxe').on('click', (e) => {
 
     setTile(AXE);
     selectMenuItems(AXE);
@@ -198,7 +199,7 @@ $('.selectAxe').on('click', function(e) {
   
 });
 
-$('.selectBoat').on('click', function(e) {
+$('.selectBoat').on('click', (e) => {
 
     setTile(BOAT);
     selectMenuItems(BOAT);
@@ -206,7 +207,7 @@ $('.selectBoat').on('click', function(e) {
   
 });
 
-$('.selectKey').on('click', function(e) {
+$('.selectKey').on('click', (e) => {
 
     setTile(KEY);
     selectMenuItems(KEY);
@@ -215,7 +216,7 @@ $('.selectKey').on('click', function(e) {
   
 });
 
-$('.selectPlayer').on('click', function(e) {
+$('.selectPlayer').on('click', (e) => {
 
     setTile(PLAYER);
     selectMenuItems(PLAYER);
@@ -224,7 +225,7 @@ $('.selectPlayer').on('click', function(e) {
   
 });
 
-$('.selectDiamond').on('click', function(e) {
+$('.selectDiamond').on('click', (e) => {
 
     setTile(DIAMOND);
     selectMenuItems(DIAMOND);
@@ -233,7 +234,7 @@ $('.selectDiamond').on('click', function(e) {
   
 });
  
-$('.selectGate').on('click', function(e) {
+$('.selectGate').on('click', (e) => {
 
     setTile(GATE);
     selectMenuItems(GATE);
@@ -243,7 +244,7 @@ $('.selectGate').on('click', function(e) {
 });
 
 
-$('#canvas')[0].addEventListener('mousedown', function(evt) {
+$('#canvas')[0].addEventListener('mousedown', (evt) => {
 
     var mousePos = getMousePos($('#canvas')[0], evt);
 
@@ -252,7 +253,7 @@ $('#canvas')[0].addEventListener('mousedown', function(evt) {
    
 }, false);
 
-$('#canvas')[0].addEventListener("mousemove", function (evt) {
+$('#canvas')[0].addEventListener("mousemove", (evt) => {
 
     if (startPos.x == -1 || startPos.y == -1) {
         return;
@@ -274,7 +275,7 @@ $('#canvas')[0].addEventListener("mousemove", function (evt) {
 
 }, false);
 
-$('#canvas')[0].addEventListener('mouseup', function(evt) {
+$('#canvas')[0].addEventListener('mouseup', (evt) => {
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
 
@@ -351,7 +352,7 @@ $('#canvas')[0].addEventListener('mouseup', function(evt) {
 /**
  * Respond to the Document 'ready' event
  */
-$(document).ready(function() {
+$(document).ready(() => {
  
     resetMap();
 
@@ -409,7 +410,7 @@ function loadMap(uri, callback) {
     
     map = [];
 
-    $.get(uri, function(data) {
+    $.get(uri, (data) => {
         var lines = data.split(/\r?\n/);
         for (var iLine in lines) {
             map.push(lines[iLine].split(/\s/));
@@ -508,7 +509,7 @@ function getMousePos(canvas, evt) {
  */
 function setTile(tile) {
 
-    Array.prototype.slice.call(selection).forEach(function(pos) {   
+    Array.prototype.slice.call(selection).forEach((pos) => {   
         map[pos.x][pos.y] = tile;
     });
 
@@ -523,7 +524,7 @@ function setTile(tile) {
         w : 0,
         h : 0};  
 
-    Array.prototype.slice.call(selection).forEach(function(pos) {
+    Array.prototype.slice.call(selection).forEach((pos) => {
         var x = pos.x*tileSize;
         var y = pos.y*tileSize;
 
