@@ -100,17 +100,9 @@ $('.load').on('click', (e) => {
        Array.prototype.slice.call(files).forEach((file) => { 
             var fileURL = URL.createObjectURL(file);
 
+            
             loadMap(fileURL, () => {
-
-                selection = [];
-
-                var context = $('#canvas')[0].getContext('2d');
-                
-                contentFill(context); 
-                waterFill(context);
-                landFill(context);
-
-           });
+            });
         
         });
         
@@ -218,6 +210,7 @@ $('.selectKey').on('click', (e) => {
 
 $('.selectPlayer').on('click', (e) => {
 
+    clearSprite(PLAYER);
     setTile(PLAYER);
     selectMenuItems(PLAYER);
     
@@ -236,13 +229,13 @@ $('.selectDiamond').on('click', (e) => {
  
 $('.selectGate').on('click', (e) => {
 
+    clearSprite(GATE);
     setTile(GATE);
     selectMenuItems(GATE);
 
     return false;    
   
 });
-
 
 $('#canvas')[0].addEventListener('mousedown', (evt) => {
 
@@ -275,7 +268,7 @@ $('#canvas')[0].addEventListener("mousemove", (evt) => {
 
 }, false);
 
-$('#canvas')[0].addEventListener('mouseup', (evt) => {
+$('#canvas')[0].addEventListener('mouseup', (evt) => {   
     var mousePos = getMousePos($('#canvas')[0], evt);
     var context = $('#canvas')[0].getContext('2d');
 
@@ -296,7 +289,7 @@ $('#canvas')[0].addEventListener('mouseup', (evt) => {
 
         selectMenuItems(map[pos.x][pos.y]);
 
-    } else {  
+    } else if (startPos.x != -1 && startPos.y != -1) {  
         var rect = { x: 0,
                      y: 0,
                      w : 0,
@@ -592,6 +585,7 @@ function fillSelectionRect(context, x, y) {
  * @param {*} context the Canvas Context
  */
 function contentFill(context) {
+
     context.fillStyle = '#a6e26b';
     context.fillRect(0, 0, 804, 804);
 
@@ -804,4 +798,24 @@ function overlap(x1, y1, w1, h1, x2, y2, w2, h2) {
   
     return dx * dy;
   
+}
+
+/**
+ * Reset the Sprite
+ * @param {*} sprite the Sprite to reset
+ */
+function clearSprite(sprite) {
+
+    for (var xMap = 0; xMap < 40; xMap++) {
+                    
+        for (var yMap = 0; yMap < 40; yMap++) {
+ 
+            if (sprite == map[xMap][yMap]) {
+                map[xMap][yMap] = FIELD;
+            }
+
+        }
+
+    }
+
 }
