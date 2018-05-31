@@ -2,9 +2,9 @@
 
 **Application (Game) that demonstrates the Canvas and Buffered Graphics**
 
-This is a minimal Electron application to 
+This is a minimal Electron application to demonstrate the Canvas
 
-A application needs just these files:
+The makor files for this application are:
 
 - `package.json` - Points to the app's main file and lists its details and dependencies.
 - `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
@@ -27,6 +27,8 @@ npm install
 npm start
 # Package Application for windows
 npm run package-win
+# Create Windows Installer
+npm run create-installer-win
 ```
 
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
