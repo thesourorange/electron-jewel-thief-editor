@@ -100,8 +100,13 @@ $('.load').on('click', (e) => {
        Array.prototype.slice.call(files).forEach((file) => { 
             var fileURL = URL.createObjectURL(file);
 
-            
             loadMap(fileURL, () => {
+                var context = $('#canvas')[0].getContext('2d');
+    
+                contentFill(context);
+                waterFill(context);
+                landFill(context);
+
             });
         
         });
