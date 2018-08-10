@@ -12,6 +12,8 @@ const d3 = require('d3');
 const $fileutil = require('./assets/javascripts/util/fileutil.js');
 const $tile = require('./assets/javascripts/map/tile.js');
 
+require('electron-disable-file-drop');
+
 const tileSize = 20;
 const originX = 190;
 const originY = 190;
